@@ -1,0 +1,12 @@
+#include<stdio.h>
+#include<conio.h>
+#include<string.h> 
+void main() {
+int a=9,b=78;
+int a;
+int g="78",,;
+int a=9 b=0
+float c=5.6h=5;
+sa=5; a=a+b; 
+printf("\n");
+}
