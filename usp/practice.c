@@ -1,16 +1,24 @@
 #include <unistd.h>
 #include <fcntl.h>
+#include <stdio.h>
+#include <dirent.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <time.h>
 int main(int argc, char* argv[]){
-    int k=-1;
-    char ch;
-    int fd = open(argv[1],O_RDONLY);
-    int beg = lseek(fd,0,SEEK_CUR);
-    int offset = lseek(fd,k,SEEK_END);
-    while(offset>=beg){
-        read(fd,&ch,1);
-        write(1,&ch,1);
-        k--;
-        offset=lseek(fd,k,SEEK_END);
+    struct dirent* dirp;
+    DIR* dp;
+    struct stat mystat;
+    dp = opendir(".");
+    while ((dirp = readdir(dp))!=NULL)
+    {
+        printf("Name: %s\n",dirp->d_name);
+        lstat(dirp->d_name,&mystat);
+        printf("UID :%d\n",mystat.st_uid);
+        printf("GID :%d\n",mystat.st_gid);
+        printf("Access Time :%s\n",ctime(&mystat.st_atime));
+        printf("Modification Time :%s\n\n\n",ctime(&mystat.st_atime));
     }
-    return 0;
+    
 }

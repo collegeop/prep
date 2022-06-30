@@ -1,35 +1,24 @@
-#include<stdio.h>
+#include <unistd.h>
 #include <fcntl.h>
+#include <stdio.h>
 #include <dirent.h>
 #include <stdlib.h>
-#include <sys/stat.h>
 #include <sys/types.h>
-#include<time.h>
-int main(int argc, char *argv[])
-{
-    DIR *dp; struct dirent *dirp;
-    struct stat sb;
+#include <sys/stat.h>
+#include <time.h>
+int main(int argc, char* argv[]){
+    struct dirent* dirp;
+    DIR* dp;
+    struct stat mystat;
     dp = opendir(".");
-    while ((dirp = readdir(dp)) != NULL)
+    while ((dirp = readdir(dp))!=NULL)
     {
-        if(lstat(dirp->d_name, &sb) == -1) 
-        {
-            perror("lstat");
-            exit(0);
-        }
-        printf("%s\n",dirp->d_name);
-        printf("I-node number:%ld\n", (long) sb.st_ino);
-        printf("Mode:%lo (octal)\n",(unsigned long) sb.st_mode);
-        printf("Link count:%ld\n", (long) sb.st_nlink);
-        printf("Ownership:UID=%ld   GID=%ld\n",(long) sb.st_uid, (long) sb.st_gid);
-        printf("Preferred I/O block size: %ld bytes\n",(long) sb.st_blksize);
-        printf("File size:%lld bytes\n",(long long) sb.st_size);
-        printf("Blocks allocated:%lld\n",(long long) sb.st_blocks);
-        printf("Last status change:%s", ctime(&sb.st_ctime));
-        printf("Last file access:%s", ctime(&sb.st_atime));
-        printf("Last file modification:%s", ctime(&sb.st_mtime));
-        printf("\n\n");
+        printf("Name: %s\n",dirp->d_name);
+        lstat(dirp->d_name,&mystat);
+        printf("UID :%d\n",mystat.st_uid);
+        printf("GID :%d\n",mystat.st_gid);
+        printf("Access Time :%s\n",ctime(&mystat.st_atime));
+        printf("Modification Time :%s\n\n\n",ctime(&mystat.st_atime));
     }
-    closedir(dp);
-    return 0; 
+    
 }
